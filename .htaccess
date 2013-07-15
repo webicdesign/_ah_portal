@@ -1,0 +1,29 @@
+<FilesMatch "\.(cache|files|images|modules|temp|themes(\.php)?|xtmpl)$|^(\..*|Entries.*|Repository|Root|Tag|Template)$">
+  Order allow,deny
+</FilesMatch>
+Options -Indexes
+<IfModule mod_php5.c>
+  php_flag magic_quotes_gpc                 off
+  php_flag magic_quotes_sybase              off
+  php_flag register_globals                 off
+  php_flag session.auto_start               off
+  php_value mbstring.http_input             pass
+  php_value mbstring.http_output            pass
+  php_flag mbstring.encoding_translation    off
+</IfModule>
+ErrorDocument 404 /index.php
+ErrorDocument 403 /index.php
+DirectoryIndex index.php
+AddDefaultCharset utf-8
+RewriteEngine on
+RewriteCond %{QUERY_STRING} http[:%] [NC]
+RewriteRule .* /--http-- [F,NC]
+RewriteRule http: /--http-- [F,NC]
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^.*$ index.php [NC,L]
+AddType video/ogg .ogv
+AddType video/mp4 .mp4
+AddType video/webm .webm
